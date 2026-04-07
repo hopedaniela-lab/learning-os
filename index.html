@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manifestation — April 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--ink:#1a1520;--paper:#f7f4f0;--muted:#9e97a8;--accent:#7a6fa8;--accent-light:#ede9f8;--accent2:#c4a882;--border:#e2ddd8;--w1:#7a6fa8;--w2:#4a8a72;--w3:#b86a4a;--w4:#c4a882}
+body{font-family:'Cormorant Garamond',Georgia,serif;background:var(--paper);color:var(--ink);min-height:100vh;padding:48px 24px 80px}
+.wrap{max-width:820px;margin:0 auto}
+.hdr{margin-bottom:48px}
+.hdr-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.hdr-title{font-size:clamp(32px,5vw,52px);font-weight:300;line-height:1.05;letter-spacing:-.02em;margin-bottom:6px}
+.hdr-title em{font-style:italic;color:var(--accent)}
+.hdr-sub{font-size:16px;font-weight:300;color:var(--muted);font-style:italic}
+.hdr-line{margin-top:24px;height:1px;background:linear-gradient(to right,var(--accent),transparent)}
+.prog-wrap{margin-bottom:32px}
+.prog-bar{background:var(--border);height:2px;border-radius:2px;overflow:hidden;margin-bottom:5px}
+.prog-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .4s ease}
+.prog-row{display:flex;align-items:center;gap:12px}
+.prog-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted)}
+.saved{font-family:'DM Mono',monospace;font-size:10px;color:var(--w2);opacity:0;transition:opacity .3s}
+.saved.show{opacity:1}
+.week{margin-bottom:48px}
+.week-hdr{display:flex;align-items:baseline;gap:12px;margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.wpill{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:3px 10px;border-radius:20px;white-space:nowrap}
+.wdates{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.05em}
+.wtitle{font-size:24px;font-weight:400;letter-spacing:-.01em}
+.wtag{font-size:13px;font-style:italic;color:var(--muted);margin-left:auto}
+.w1 .wpill{background:#ede9f8;color:#534AB7}.w2 .wpill{background:#e4f2ec;color:#0F6E56}.w3 .wpill{background:#f7ede7;color:#993C1D}.w4 .wpill{background:#f7f1e8;color:#854F0B}
+.card{background:#fff;border:1px solid var(--border);border-radius:2px;margin-bottom:10px;overflow:hidden}
+.card-top{display:flex;align-items:stretch;cursor:pointer;user-select:none}
+.accent-bar{width:3px;flex-shrink:0}
+.w1 .accent-bar{background:var(--w1)}.w2 .accent-bar{background:var(--w2)}.w3 .accent-bar{background:var(--w3)}.w4 .accent-bar{background:var(--w4)}
+.card-sum{flex:1;padding:13px 16px;display:flex;align-items:center;gap:12px}
+.chk{width:17px;height:17px;border:1.5px solid var(--border);border-radius:3px;flex-shrink:0;cursor:pointer;transition:all .15s;background:#fff;display:flex;align-items:center;justify-content:center}
+.chk:hover{border-color:var(--accent)}
+.chk.done{background:var(--accent);border-color:var(--accent)}
+.chk.done::after{content:'';width:8px;height:4px;border-left:1.5px solid #fff;border-bottom:1.5px solid #fff;transform:rotate(-45deg) translateY(-1px);display:block}
+.dlabel{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);min-width:48px;line-height:1.6}
+.ddate{font-size:9px;color:var(--accent2);display:block;letter-spacing:.04em}
+.dname{font-size:15px;font-weight:400;color:var(--ink)}
+.dsub{font-size:12px;font-style:italic;color:var(--muted);margin-top:2px}
+.tog{padding:13px 16px;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);display:flex;align-items:center;transition:transform .2s}
+.tog.open{transform:rotate(180deg)}
+.body{display:none;border-top:1px solid var(--border)}
+.body.open{display:block}
+.grid{display:grid;grid-template-columns:1fr 1fr;background:#fff}
+.sec{padding:18px 20px;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.sec:nth-child(2n){border-right:none}
+.slabel{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.rlist{list-style:none}
+.rlist li{font-size:13px;line-height:1.6;color:var(--ink);padding-left:14px;position:relative;margin-bottom:3px}
+.rlist li::before{content:'—';position:absolute;left:0;color:var(--muted)}
+.flist{list-style:none}
+.flist li{font-size:13px;line-height:1.5;color:var(--ink);margin-bottom:5px;display:flex;align-items:flex-start;gap:8px}
+.fchk{width:13px;height:13px;border:1px solid var(--border);border-radius:2px;flex-shrink:0;margin-top:2px;cursor:pointer;background:#fff;transition:all .15s;position:relative}
+.fchk:hover{border-color:var(--accent)}
+.fchk.done{background:var(--accent-light);border-color:var(--accent)}
+.fchk.done::after{content:'✓';position:absolute;top:-2px;left:1px;font-size:10px;color:var(--accent);font-family:'DM Mono',monospace}
+.review{background:#f9f7ff;border-top:1px solid #d9d2ef;padding:18px 20px}
+.rlabel{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+.rq{font-size:14px;font-style:italic;color:var(--ink);line-height:1.5;margin-bottom:5px;padding-left:14px;position:relative}
+.rq::before{content:'↳';position:absolute;left:0;color:var(--accent);font-style:normal}
+textarea{width:100%;margin-top:6px;margin-bottom:12px;min-height:52px;border:1px solid #d9d2ef;border-radius:4px;padding:9px 11px;font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--ink);background:#fff;resize:vertical;outline:none;line-height:1.5}
+textarea:focus{border-color:var(--accent)}
+textarea::placeholder{color:var(--muted);font-style:italic}
+.foot{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);text-align:center;margin-top:40px;letter-spacing:.08em}
+@media(max-width:560px){.grid{grid-template-columns:1fr}.sec{border-right:none}.wtag{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="hdr">
+  <div class="hdr-label">7 – 30 April 2026 · Learning OS</div>
+  <h1 class="hdr-title">The month of<br><em>Manifestation</em></h1>
+  <p class="hdr-sub">Four weeks. Twenty-four days. One complete inner architecture.</p>
+  <div class="hdr-line"></div>
+</div>
+<div class="prog-wrap">
+  <div class="prog-bar"><div class="prog-fill" id="pf" style="width:0%"></div></div>
+  <div class="prog-row"><span class="prog-label" id="pl">0 / 24 days complete</span><span class="saved" id="sv">saved ✓</span></div>
+</div>
+<div id="app"></div>
+<div class="foot">notes save automatically to this browser · your data never leaves your device</div>
+</div>
+
+<script>
+const WEEKS=[
+  {cls:'w1',num:'Week 1',dates:'Apr 7 – 12',title:'The nature of thought',tag:'Understanding the raw material',days:[
+    {n:'Day 1',date:'Apr 7',name:'The full landscape',sub:'Foundation day — all angles as one overview',
+     read:['Neville Goddard — <em>The Power of Awareness</em>, ch. 1–3 (free online)','Bruce Lipton — Biology of Belief intro lecture (YouTube)','Kybalion — The Principle of Mentalism, ch. 2 (free PDF)'],
+     focus:['What is a thought — neuroscience + metaphysics','Why some thoughts stick','Thought vs belief vs identity','The subconscious as programmer','Thought as vibration + the observer','Write your week intention'],
+     qs:['What did I already believe about how thoughts work — and was I right?','What surprised me most today?','One thought I notice I keep having.','If I had to explain today\'s biggest idea to someone at dinner — what would I say?']},
+    {n:'Day 2',date:'Apr 8',name:'What a thought actually is',sub:'Neuroscience + metaphysics angle',
+     read:['Joe Dispenza — <em>Breaking the Habit of Being Yourself</em>, part 1','Andrew Huberman — "How the Brain Works" (Huberman Lab ep. 1)','Kybalion ch. 2 again, slower'],
+     focus:['Neurons that fire together wire together','Thought as electrochemical signal','Thought as energy / frequency (Hermetic)','The gap between stimulus and response'],
+     qs:['What did I already believe about how thoughts work — and was I right?','What surprised me today?','One thought I notice I keep having.','My take: are thoughts just electrical signals, or something more?']},
+    {n:'Day 3',date:'Apr 9',name:'Why some thoughts stick',sub:'Repetition, emotion, identity fusion',
+     read:['Joe Dispenza — <em>Breaking the Habit</em>, ch. 3–4','Kahneman — <em>Thinking Fast and Slow</em>, ch. 1','Search: "emotional memory consolidation" — one clean article'],
+     focus:['Emotion as the glue that makes thoughts permanent','Repetition = neural highway','"I am" statements and identity fusion','Confirmation bias as reinforcement'],
+     qs:['What did I already believe about how thoughts work — and was I right?','What surprised me today?','One thought I notice I keep having.','Which of my recurring thoughts have the most emotional charge — and what does that tell me?']},
+    {n:'Day 4',date:'Apr 10',name:'Thought vs belief vs identity',sub:'The three layers and how to tell them apart',
+     read:['James Clear — <em>Atomic Habits</em>, ch. 2','Neville Goddard — <em>The Law and the Promise</em>, ch. 1','Search: "thought vs belief psychology" — one solid article'],
+     focus:['Thought = passing signal','Belief = repeated thought + emotional charge','Identity = beliefs you call "just who I am"','Identity is hardest and most powerful to change'],
+     qs:['What did I already believe about how thoughts work — and was I right?','What surprised me today?','One thought I notice I keep having.','List 3 things I believe about myself — thought, belief, or identity? How can I tell?']},
+    {n:'Day 5',date:'Apr 11',name:'The subconscious as programmer',sub:'How 95% runs without your input',
+     read:['Bruce Lipton — <em>Biology of Belief</em>, ch. 4–5','Lipton full lecture (YouTube, 1hr)','Freud\'s iceberg model — any clean visual explainer'],
+     focus:['Conscious vs subconscious processing speed','How programs form in ages 0–7 (theta state)','Why willpower alone doesn\'t work','Theta state as the reprogramming window'],
+     qs:['What did I already believe about how thoughts work — and was I right?','What surprised me today?','One thought I notice I keep having.','What programs might I be running that I never chose — and where did they come from?']},
+    {n:'Day 6',date:'Apr 12',name:'Integration — mapping your patterns',sub:'Thought as vibration · the observer · week audit',
+     read:['Kybalion — Principle of Vibration, ch. 9','Eckhart Tolle — <em>The Power of Now</em>, ch. 1–2','Do one 10 min witness meditation (search: "witness consciousness meditation")'],
+     focus:['List your 5 most frequent thought categories','Mark each: past / present / future','Mark each: contracting or expanding','Re-read your day 1 intention — did you get it?','Write your week 2 intention'],
+     qs:['What did I already believe about how thoughts work — and was I right?','What surprised me most this week?','One thought I kept having all week.','My opinion on the nature of thought — in my own words, as if speaking it out loud.']}
+  ]},
+  {cls:'w2',num:'Week 2',dates:'Apr 13 – 18',title:'Limiting beliefs',tag:'Finding and removing the blocks',days:[
+    {n:'Day 7',date:'Apr 13',name:'The full landscape — limiting beliefs',sub:'Foundation day — overview before depth',
+     read:['Byron Katie — <em>Loving What Is</em>, introduction','Neville Goddard — <em>Your Faith is Your Fortune</em>, ch. 1','Search: "how limiting beliefs form" — one video explainer'],
+     focus:['What a limiting belief is','Where they come from','How to surface hidden ones','Cognitive reframing (Byron Katie\'s The Work)','Somatic + identity-level rewriting','Write your week intention'],
+     qs:['What did I already believe about limiting beliefs — and was I right?','What surprised me today?','One limiting belief I think I might have.','If I had to define a limiting belief to someone — what would I say?']},
+    {n:'Day 8',date:'Apr 14',name:'What they are and where they come from',sub:'Definition, origin, childhood conditioning',
+     read:['Byron Katie — <em>Loving What Is</em>, ch. 1–2','Bruce Lipton — <em>Biology of Belief</em>, ch. 4 with this lens','Search: "childhood conditioning limiting beliefs" — one article'],
+     focus:['A limiting belief is a thought that became a fact','Programming before age 7 — you didn\'t choose it','Cultural and collective beliefs you inherited','One painful experience that became a rule'],
+     qs:['What did I already believe about limiting beliefs — and was I right?','What surprised me today?','One limiting belief I can trace back to a specific source.','How responsible am I for beliefs I was given before I could choose?']},
+    {n:'Day 9',date:'Apr 15',name:'How to surface hidden ones',sub:'The ones that sound like facts',
+     read:['Byron Katie — <em>Loving What Is</em>, The Work explained','Search: "shadow beliefs journaling method" — one technique article'],
+     focus:['Hidden beliefs feel like objective reality','Trigger mapping — what makes you react?','Finish the sentence: "I can\'t because..."','Finish the sentence: "People like me don\'t..."'],
+     qs:['What did I already believe about limiting beliefs — and was I right?','What surprised me today?','One hidden belief I found today that I didn\'t know was there.','Which is harder — finding a limiting belief or removing it? Why?']},
+    {n:'Day 10',date:'Apr 16',name:'Cognitive reframing',sub:"Byron Katie's The Work + CBT tools",
+     read:['Byron Katie — <em>Loving What Is</em>, The Work in practice','Search: "cognitive reframing CBT technique" — one explainer'],
+     focus:['Is it true? Can you absolutely know it\'s true?','The turnaround — flip the belief completely','Apply The Work to one of your own beliefs today'],
+     qs:['What did I already believe about reframing thoughts — and was I right?','What surprised me today?','One belief I reframed today — and what it became.','Does questioning a belief make it lose power, or just move it somewhere else?']},
+    {n:'Day 11',date:'Apr 17',name:'Somatic release + identity rewriting',sub:'Beliefs live in the body · rewriting at the root',
+     read:['Search: "somatic healing limiting beliefs" — one article or video','James Clear — <em>Atomic Habits</em>, ch. 2 (identity-based change)','Do one body scan meditation today'],
+     focus:['Where in your body do you feel your biggest belief?','Breathwork as belief release','Rewriting from identity level — "I am the kind of person who..."','Do the body scan meditation'],
+     qs:['What did I already believe about the mind-body connection — and was I right?','What surprised me today?','Where in my body do I feel my most stubborn belief?','Can you really change a belief without involving the body?']},
+    {n:'Day 12',date:'Apr 18',name:'Your top 5 limiting beliefs',sub:'Personal audit · integration day',
+     read:['Go back through week 2 journal entries','Compile your personal top 5 limiting beliefs','Write your week 3 intention'],
+     focus:['Name each belief clearly in one sentence','Trace each to its origin','Rate each: how much is it costing you (1–10)?','Decide which one you work on first'],
+     qs:['What did I learn about myself this week that I didn\'t expect?','What surprised me about the nature of limiting beliefs?','The one belief I\'m most ready to release.','Are limiting beliefs the main thing standing between me and what I want? My honest opinion.']}
+  ]},
+  {cls:'w3',num:'Week 3',dates:'Apr 19 – 24',title:'Manifestation mechanics',tag:'How reality responds to inner state',days:[
+    {n:'Day 13',date:'Apr 19',name:'The full landscape — manifestation',sub:'Stripping the noise, keeping the truth',
+     read:['Neville Goddard — <em>The Power of Awareness</em>, ch. 4–6','Search: "manifestation explained scientifically" — one balanced article','Review Kybalion\'s Law of Correspondence'],
+     focus:['What manifestation actually is (and isn\'t)','The feeling is the prayer — Neville\'s core method','Visualization done right','Scripting and living from the end','Detachment, trust, Hermetic correspondence','Write your week intention'],
+     qs:['What did I already believe about manifestation — and was I right?','What surprised me today?','One thought I notice I keep having about whether this is real.','My definition of manifestation in my own words — right now.']},
+    {n:'Day 14',date:'Apr 20',name:'The feeling is the prayer',sub:"Neville Goddard's core method",
+     read:['Neville Goddard — <em>Feeling is the Secret</em> (short, free online — read all)','Search: "Neville Goddard feeling is the secret explained" — one video'],
+     focus:['You don\'t manifest what you think — what you feel','The subconscious responds to feeling, not words','Sit in the feeling of already having one thing — today'],
+     qs:['What did I already believe about how emotion affects reality — and was I right?','What surprised me today?','One feeling I want to embody more.','Is "feeling it first" actually practical — or wishful thinking?']},
+    {n:'Day 15',date:'Apr 21',name:'Visualization + scripting',sub:'Doing it right · living from the end',
+     read:['Joe Dispenza — <em>Breaking the Habit</em>, ch. 7–8','Neville Goddard — <em>The Law and the Promise</em>, ch. 2–3','Search: "scripting manifestation method" — one practical guide'],
+     focus:['Visualize from inside, not watching yourself','All senses — not just visual','Write one scripting entry as if it already happened','Do a 10 min visualization session today'],
+     qs:['What did I already believe about visualization and scripting — and was I right?','What surprised me today?','What I visualized or scripted today — and how it felt.','Is scripting self-deception or self-direction? My honest take.']},
+    {n:'Day 16',date:'Apr 22',name:'Detachment + Hermetic correspondence',sub:'The paradox of letting go · inner world = outer world',
+     read:['Eckhart Tolle — <em>The Power of Now</em>, ch. 5 (surrender)','Kybalion — Law of Correspondence, ch. 5','Search: "detachment manifestation" — one article or video'],
+     focus:['Detachment ≠ not caring — it\'s certainty','Desperation as a repellent frequency','Your outer life is a map of your inner state','Look at your current reality — what does it tell you?'],
+     qs:['What did I already believe about detachment and inner-outer connection — and was I right?','What surprised me today?','One pattern in my outer life that reflects something inner.','How do you want something fully and let go at the same time? My answer.']},
+    {n:'Day 17',date:'Apr 23',name:'Building your personal practice',sub:'What your daily looks like from here',
+     read:['No new reading — design day','Write your daily manifestation practice in full','Write your week 4 intention'],
+     focus:['Morning: visualization + scripting (how long?)','During day: state checks (when, how often?)','Evening: review + gratitude','Write it as a committed daily protocol'],
+     qs:['What do I now believe about how manifestation works — in my own words?','What surprised me most this week?','One thing I\'m actively manifesting right now.','My honest opinion: do I believe this works — and why?']},
+    {n:'Day 18',date:'Apr 24',name:'Week 3 integration',sub:'No new reading · audit + carry forward',
+     read:['Review all week 3 journal entries','Refine your daily practice protocol'],
+     focus:['Have I actually practiced this week — or just studied?','What\'s the gap between knowing and doing?','What am I carrying into week 4?'],
+     qs:['What do I now believe about manifestation that I didn\'t at the start of the week?','What surprised me most this week?','One thing I keep thinking about that won\'t leave me alone.','If someone asked me "does manifestation work?" — what would I say right now?']}
+  ]},
+  {cls:'w4',num:'Week 4',dates:'Apr 25 – 30',title:'Anchors & state design',tag:"Installing what you've built",days:[
+    {n:'Day 19',date:'Apr 25',name:'The full landscape — anchors',sub:'What they are · mapping what you already have',
+     read:['Search: "NLP anchoring technique explained" — one solid article','Search: "Pavlov conditioning anchors" — one explainer'],
+     focus:['Anchor = sensory trigger linked to emotional state','Touch, sound, scent, sight as anchor types','Map 5 anchors you already have (positive + negative)','Building intentional anchors — the stacking method','State design + ritual + environment as anchor systems','Write your week intention'],
+     qs:['What did I already believe about triggers and emotional state — and was I right?','What surprised me today?','One anchor I already have that I didn\'t realize was there.','How much of my daily emotional state is triggered by things I never consciously chose?']},
+    {n:'Day 20',date:'Apr 26',name:'Building intentional anchors',sub:'The stacking method · peak state + trigger',
+     read:['Search: "NLP anchor stacking technique" — one practical guide','Search: "how to set an anchor NLP step by step" — one video'],
+     focus:['Peak state + physical trigger = anchor','Stacking: layer multiple peak states on one trigger','Build one anchor today — then test it','Physiology leads the psychology'],
+     qs:['What did I already believe about controlling my state on demand — and was I right?','What surprised me today?','The anchor I built today — and whether it worked.','Can a physical gesture really change an emotional state? My honest answer.']},
+    {n:'Day 21',date:'Apr 27',name:'State design',sub:'Engineering the emotional states you need',
+     read:['Search: "emotional state design performance psychology" — one article','Search: "Tony Robbins state management" — one short video'],
+     focus:['Identify 3 states you want to access on demand','Design the trigger for each','Physiology → psychology (body leads the mind)'],
+     qs:['What did I already believe about engineering emotional states — and was I right?','What surprised me today?','The 3 states I want on demand — and why those specifically.','Is designing your emotional state mastery or manipulation?']},
+    {n:'Day 22',date:'Apr 28',name:'Ritual + environment as anchor system',sub:'Morning rituals · space, scent, sound',
+     read:['Search: "morning ritual anchor nervous system" — one article','Search: "environment design behavior psychology" — one article','Search: "scent memory emotional state" — one neuroscience piece'],
+     focus:['A ritual is an intentional sequence of anchors','Your environment is constantly anchoring you — to what?','Assign a scent or sound to your focused work state','Design your morning ritual as an anchor sequence'],
+     qs:['What did I already believe about how environment and ritual affect me — and was I right?','What surprised me today?','My morning ritual design — what will it look like?','Is a strict ritual a cage or a launchpad?']},
+    {n:'Day 23',date:'Apr 29',name:'Lock it in',sub:'Finalize your daily practice · commit to it',
+     read:['Write your full daily practice as a final document','Morning ritual, anchor triggers, evening review','Commit one belief you are releasing this month'],
+     focus:['Morning practice — written out step by step','Your 3 anchors and their triggers — documented','The one limiting belief you are actively releasing','What month 2\'s theme will be'],
+     qs:['What did I learn about anchors this week that I didn\'t expect?','What surprised me about state design?','One anchor I\'m committing to from tomorrow forward.','How much of my daily experience is designed vs. accidental right now?']},
+    {n:'Day 24',date:'Apr 30',name:'Full month integration',sub:'April 7 → April 30 · your complete record',
+     read:['Review all 4 weeks of journal entries','Re-read your day 1 intention','Write what changed'],
+     focus:['What do I know now that I didn\'t on April 7?','What has already shifted — even slightly?','What is my daily practice going forward?','What is month 2\'s theme?'],
+     qs:['What do I now believe about manifestation that I didn\'t believe on April 7?','What surprised me most across this entire month?','The one thought pattern that changed the most.','If I had to explain manifestation, limiting beliefs, and anchors to someone right now — speak it out. Write it like you\'re saying it.']}
+  ]}
+];
+
+const SK='lunara-manifestation-april-2026';
+let state={};
+try{const s=localStorage.getItem(SK);if(s)state=JSON.parse(s);}catch(e){}
+
+function save(){
+  try{localStorage.setItem(SK,JSON.stringify(state));}catch(e){}
+  const sv=document.getElementById('sv');
+  sv.classList.add('show');
+  setTimeout(()=>sv.classList.remove('show'),1500);
+}
+
+function k(wi,di,t,i){return `${wi}-${di}-${t}-${i}`;}
+
+function render(){
+  const app=document.getElementById('app');
+  app.innerHTML='';
+  WEEKS.forEach((week,wi)=>{
+    const wdiv=document.createElement('div');
+    wdiv.className=`week ${week.cls}`;
+    wdiv.innerHTML=`<div class="week-hdr"><span class="wpill">${week.num}</span><span class="wdates">${week.dates}</span><span class="wtitle">${week.title}</span><span class="wtag">${week.tag}</span></div>`;
+    week.days.forEach((day,di)=>{
+      const card=document.createElement('div');
+      card.className='card';
+      const dk=k(wi,di,'done',0);
+      const done=state[dk];
+      card.innerHTML=`
+        <div class="card-top" onclick="tog(this)">
+          <div class="accent-bar"></div>
+          <div class="card-sum">
+            <div class="chk${done?' done':''}" onclick="toggleDone(event,this,'${dk}')"></div>
+            <span class="dlabel">${day.n}<span class="ddate">${day.date}</span></span>
+            <div><div class="dname">${day.name}</div><div class="dsub">${day.sub}</div></div>
+          </div>
+          <div class="tog">▾</div>
+        </div>
+        <div class="body">
+          <div class="grid">
+            <div class="sec">
+              <div class="slabel">Read / Watch</div>
+              <ul class="rlist">${day.read.map(r=>`<li>${r}</li>`).join('')}</ul>
+            </div>
+            <div class="sec">
+              <div class="slabel">Focus</div>
+              <ul class="flist">${day.focus.map((f,fi)=>{
+                const fk=k(wi,di,'f',fi);
+                return `<li><div class="fchk${state[fk]?' done':''}" onclick="toggleF(this,'${fk}')"></div><span>${f}</span></li>`;
+              }).join('')}</ul>
+            </div>
+          </div>
+          <div class="review">
+            <div class="rlabel">Evening review — form your opinion</div>
+            ${day.qs.map((q,qi)=>{
+              const qk=k(wi,di,'q',qi);
+              return `<div class="rq">${q}</div><textarea placeholder="Write here..." oninput="saveT(this,'${qk}')">${(state[qk]||'').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</textarea>`;
+            }).join('')}
+          </div>
+        </div>`;
+      wdiv.appendChild(card);
+    });
+    app.appendChild(wdiv);
+  });
+  updateProg();
+}
+
+function tog(el){
+  const body=el.closest('.card').querySelector('.body');
+  const t=el.querySelector('.tog');
+  body.classList.toggle('open');
+  t.classList.toggle('open');
+}
+function toggleDone(e,el,dk){
+  e.stopPropagation();
+  el.classList.toggle('done');
+  state[dk]=el.classList.contains('done');
+  save();updateProg();
+}
+function toggleF(el,fk){
+  el.classList.toggle('done');
+  state[fk]=el.classList.contains('done');
+  save();
+}
+function saveT(el,qk){
+  state[qk]=el.value;
+  save();
+}
+function updateProg(){
+  let done=0;
+  WEEKS.forEach((w,wi)=>w.days.forEach((_,di)=>{if(state[k(wi,di,'done',0)])done++;}));
+  const pct=Math.round((done/24)*100);
+  document.getElementById('pf').style.width=pct+'%';
+  document.getElementById('pl').textContent=done+' / 24 days complete';
+}
+
+render();
+</script>
+</body>
+</html>
